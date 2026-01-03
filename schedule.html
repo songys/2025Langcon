@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발표 및 스탭 안내 - Langcon 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-blue: #0d6efd;
+            --accent-green: #198754;
+            --accent-orange: #fd7e14;
+            --accent-purple: #6f42c1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--bg-primary);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        nav a.active {
+            color: var(--accent-blue);
+            background: rgba(13, 110, 253, 0.1);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Schedule */
+        .schedule-section {
+            padding: 40px 20px;
+        }
+
+        .schedule-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 12px;
+        }
+
+        /* Accordion Styles */
+        .session-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .session-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .session-item:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .session-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            gap: 16px;
+            transition: background 0.2s;
+        }
+
+        .session-header:hover {
+            background: var(--bg-secondary);
+        }
+
+        .session-time {
+            font-weight: 600;
+            color: var(--accent-blue);
+            font-family: 'Courier New', monospace;
+            min-width: 100px;
+            font-size: 0.9rem;
+        }
+
+        .session-info {
+            flex: 1;
+        }
+
+        .session-speaker {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .session-affiliation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .session-topic {
+            color: var(--text-primary);
+            margin-top: 4px;
+        }
+
+        .session-toggle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .session-item.open .session-toggle {
+            transform: rotate(180deg);
+        }
+
+        .session-details {
+            display: none;
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .session-item.open .session-details {
+            display: block;
+        }
+
+        .speaker-profile {
+            display: flex;
+            gap: 20px;
+            padding-top: 20px;
+            align-items: flex-start;
+        }
+
+        .speaker-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .speaker-bio {
+            flex: 1;
+        }
+
+        .speaker-bio h4 {
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        .speaker-bio p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .session-description {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .session-description h4 {
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+        }
+
+        .session-description p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .session-links {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .session-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .session-link.youtube {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+
+        .session-link.youtube:hover {
+            background: #ff0000;
+            color: white;
+        }
+
+        .session-link.slide {
+            background: rgba(13, 110, 253, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+        }
+
+        .session-link.slide:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .private-note {
+            font-size: 0.8rem;
+            color: var(--accent-orange);
+            font-style: italic;
+        }
+
+        /* Break Row */
+        .break-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .break-item .session-time {
+            display: inline;
+            margin-right: 16px;
+        }
+
+        /* Staff Section */
+        .staff-section {
+            padding: 40px 20px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .staff-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 25px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .staff-item {
+            text-align: center;
+        }
+
+        .staff-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .staff-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .staff-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+        }
+
+        footer .hashtag {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav ul {
+                gap: 10px;
+            }
+
+            nav a {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            .session-header {
+                flex-wrap: wrap;
+            }
+
+            .session-time {
+                min-width: 80px;
+            }
+
+            .speaker-profile {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Langcon2025</a></li>
+            <li><a href="schedule.html" class="active">발표 및 스탭 안내</a></li>
+            <li><a href="history.html">이전대회</a></li>
+            <li><a href="faq.html">자주하는 질문</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>발표 및 스탭 안내</h1>
+        <p class="subtitle">발표자 이름을 클릭하면 상세 정보를 볼 수 있습니다.</p>
+    </header>
+
+    <section class="schedule-section">
+        <div class="container">
+            <h2>일반 발표</h2>
+            <div class="session-list">
+                <!-- 10:30 서희 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">10:30-11:00</span>
+                        <div class="session-info">
+                            <div class="session-speaker">서희 <span class="session-affiliation">Finda CTO</span></div>
+                            <div class="session-topic">마이데이터 활용 및 분류방법론: ChatGPT 기반 카드소비 분류</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>마이데이터 활용 및 분류방법론: ChatGPT 기반 카드소비 분류</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 11:00 한시형 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">11:00-11:30</span>
+                        <div class="session-info">
+                            <div class="session-speaker">한시형 <span class="session-affiliation">Sionic AI Co-founder</span></div>
+                            <div class="session-topic">생성형 AI 기업 적용 방안 및 사례 <span class="private-note">(비공개)</span></div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>생성형 AI 기업 적용 방안 및 사례</p>
+                            <p class="private-note" style="margin-top: 8px;">발표 자료 및 영상은 비공개입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 11:30 김현지 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">11:30-12:00</span>
+                        <div class="session-info">
+                            <div class="session-speaker">김현지 <span class="session-affiliation">동아일보 미래전략연구소</span></div>
+                            <div class="session-topic">국내외 언론의 Gen AI 활용 현황과 과제</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>국내외 언론의 Gen AI 활용 현황과 과제</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 점심시간 -->
+                <div class="break-item">
+                    <span class="session-time">12:00-13:00</span>
+                    점심시간
+                </div>
+
+                <!-- 13:00 윤도균 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">13:00-13:30</span>
+                        <div class="session-info">
+                            <div class="session-speaker">윤도균 <span class="session-affiliation">Sionic AI ML Researcher</span></div>
+                            <div class="session-topic">동화처럼 배우는 AGI LLM 기르기</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>동화처럼 배우는 AGI LLM 기르기</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 13:30 박성호 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">13:30-14:00</span>
+                        <div class="session-info">
+                            <div class="session-speaker">박성호 <span class="session-affiliation">BHSN AI Engineer</span></div>
+                            <div class="session-topic">Rethinking about Agents and Tools</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>Rethinking about Agents and Tools</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 14:00 박대영 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">14:00-14:30</span>
+                        <div class="session-info">
+                            <div class="session-speaker">박대영 <span class="session-affiliation">금융보안원 AI/Data Researcher</span></div>
+                            <div class="session-topic">LLM 위협 및 안전 동향: 레드팀, 탈옥 및 가드레일 중심으로</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>LLM 위협 및 안전 동향: 레드팀, 탈옥 및 가드레일 중심으로</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 14:30 김성현 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">14:30-15:00</span>
+                        <div class="session-info">
+                            <div class="session-speaker">김성현 <span class="session-affiliation">토스증권 ML Engineer</span></div>
+                            <div class="session-topic">생각하는 인공지능</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>생각하는 인공지능</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 쉬는 시간 -->
+                <div class="break-item">
+                    <span class="session-time">15:00-15:15</span>
+                    쉬는 시간
+                </div>
+
+                <!-- 15:15 김종민 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">15:15-15:45</span>
+                        <div class="session-info">
+                            <div class="session-speaker">김종민 <span class="session-affiliation">Lablup Developer Evangelist</span></div>
+                            <div class="session-topic">AI 모델 서비스? PALI 로 빨리 빨리!!</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>AI 모델 서비스? PALI 로 빨리 빨리!!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 15:45 안상선 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">15:45-16:15</span>
+                        <div class="session-info">
+                            <div class="session-speaker">안상선 <span class="session-affiliation">엠로보 CEO</span></div>
+                            <div class="session-topic">자연어 모델을 이용한 SNS 마약거래 포스팅 탐지 알고리즘 구현 사례</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>자연어 모델을 이용한 SNS 마약거래 포스팅 탐지 알고리즘 구현 사례</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 16:15 송영숙, 최다솔 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">16:15-16:45</span>
+                        <div class="session-info">
+                            <div class="session-speaker">송영숙, 최다솔 <span class="session-affiliation">Sionic AI Researcher</span></div>
+                            <div class="session-topic">한국어 데이터 세트를 찾아서 <span class="private-note">(비공개)</span></div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>한국어 데이터 세트를 찾아서</p>
+                            <p class="private-note" style="margin-top: 8px;">발표 자료 및 영상은 비공개입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 16:45 학생 세션 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">16:45-17:05</span>
+                        <div class="session-info">
+                            <div class="session-speaker">학생 세션 <span class="session-affiliation">1o'clock team</span></div>
+                            <div class="session-topic">지역화폐 활성화를 위한 데이터 현황판 및 챗봇(Text to SQL) 개발</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>지역화폐 활성화를 위한 데이터 현황판 및 챗봇(Text to SQL) 개발</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Hands-on 세션</h2>
+            <div class="session-list">
+                <!-- 10:30 김태영 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">10:30-12:00</span>
+                        <div class="session-info">
+                            <div class="session-speaker">김태영 <span class="session-affiliation">AI Factory CEO</span></div>
+                            <div class="session-topic">LLM기반 도구부터 에이전틱 AI까지 직접 만들어서 사용하자 - 어시웍스</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>LLM기반 도구부터 에이전틱 AI까지 직접 만들어서 사용하자 - 어시웍스</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 13:00 이경록 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">13:00-14:30</span>
+                        <div class="session-info">
+                            <div class="session-speaker">이경록 <span class="session-affiliation">Brain Crew CEO</span></div>
+                            <div class="session-topic">LangGraph를 활용한 실용적 에이전틱(Agentic) 워크플로우 구축</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>LangGraph를 활용한 실용적 에이전틱(Agentic) 워크플로우 구축</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 14:40 유저스틴 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">14:40-15:40</span>
+                        <div class="session-info">
+                            <div class="session-speaker">유저스틴 <span class="session-affiliation">Microsoft Principal Developer Advocate</span></div>
+                            <div class="session-topic">AI 에이전트 뚝딱 만들어 보기 (나야~ Semantic Kernel)</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>AI 에이전트 뚝딱 만들어 보기 (나야~ Semantic Kernel)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 15:50 이진석 -->
+                <div class="session-item">
+                    <div class="session-header" onclick="toggleSession(this)">
+                        <span class="session-time">15:50-17:20</span>
+                        <div class="session-info">
+                            <div class="session-speaker">이진석 <span class="session-affiliation">AskDjango 운영자</span></div>
+                            <div class="session-topic">장고로 만드는 RAG 웹 채팅 서비스</div>
+                        </div>
+                        <span class="session-toggle">▼</span>
+                    </div>
+                    <div class="session-details">
+                        <div class="session-description">
+                            <h4>발표 내용</h4>
+                            <p>장고로 만드는 RAG 웹 채팅 서비스</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="staff-section">
+        <div class="container">
+            <h2>스탭 소개</h2>
+            <div class="staff-grid">
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/songyoungsook.jpg" alt="송영숙"></div>
+                    <div class="staff-name">송영숙</div>
+                </div>
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/parkhaesun.png" alt="박해선"></div>
+                    <div class="staff-name">박해선</div>
+                </div>
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/parksinhong.jpg" alt="박신홍"></div>
+                    <div class="staff-name">박신홍</div>
+                </div>
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/parkjoeun.jpg" alt="박조은"></div>
+                    <div class="staff-name">박조은</div>
+                </div>
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/songjinyoung.png" alt="송진영"></div>
+                    <div class="staff-name">송진영</div>
+                </div>
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/imjuyoung.jpg" alt="임주영"></div>
+                    <div class="staff-name">임주영</div>
+                </div>
+                <div class="staff-item">
+                    <div class="staff-avatar"><img src="images/staff/songmyunggeun.jpg" alt="송명근"></div>
+                    <div class="staff-name">송명근</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Langcon 2025 - LLM과 어떻게 살아갈 것인가</p>
+        <p class="hashtag">#2025LangCon</p>
+    </footer>
+
+    <script>
+        function toggleSession(header) {
+            const sessionItem = header.parentElement;
+            sessionItem.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
